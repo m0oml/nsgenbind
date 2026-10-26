@@ -109,7 +109,7 @@ output_generated_attribute_getter(struct opctx *outc,
                         "\tif (str != NULL) {\n"
                         "\t\tduk_push_lstring(ctx,\n"
                         "\t\t\tdom_string_data(str),\n"
-                        "\t\t\tdom_string_length(str));\n"
+                        "\t\t\tdom_string_byte_length(str));\n"
                         "\t\tdom_string_unref(str);\n"
                         "\t} else {\n");
                 if (atributee->typev[0].nullable) {
