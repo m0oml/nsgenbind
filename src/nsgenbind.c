@@ -21,6 +21,7 @@
 #include "output.h"
 #include "jsapi-libdom.h"
 #include "duk-libdom.h"
+#include "qjs-libdom.h"
 
 struct options *options;
 
@@ -28,6 +29,7 @@ enum bindingtype_e {
     BINDINGTYPE_UNKNOWN,
     BINDINGTYPE_JSAPI_LIBDOM,
     BINDINGTYPE_DUK_LIBDOM,
+    BINDINGTYPE_QJS_LIBDOM,
 };
 
 static struct options* process_cmdline(int argc, char **argv)
@@ -186,6 +188,10 @@ static enum bindingtype_e genbind_get_type(struct genbind_node *node)
                 return BINDINGTYPE_DUK_LIBDOM;
         }
 
+        if (strcmp(binding_type, "qjs_libdom") == 0) {
+                return BINDINGTYPE_QJS_LIBDOM;
+        }
+
         fprintf(stderr, "Error: unsupported binding type \"%s\"\n", binding_type);
 
         return BINDINGTYPE_UNKNOWN;
@@ -243,6 +249,10 @@ int main(int argc, char **argv)
         switch (bindingtype) {
         case BINDINGTYPE_DUK_LIBDOM:
                 res = duk_libdom_output(ir);
+                break;
+
+        case BINDINGTYPE_QJS_LIBDOM:
+                res = qjs_libdom_output(ir);
                 break;
 
         default:
